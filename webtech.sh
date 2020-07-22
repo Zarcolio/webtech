@@ -76,4 +76,23 @@ then
 		whatwaf --hide --skip -u https://$1:$webport|tee -a webtech-$1.log
 	done < $1-https-tmp.log
 	
+	echo "[91m"
+	echo "===================="
+	echo "{◕ ◡ ◕} Using CMSeeK"
+	echo "====================[92m"
+	while IFS=, read -r webport; do
+		cmseek --no-redirect --batch -u http://$1:$webport|tee -a webtech-$1.log
+	done < $1-http-tmp.log
+	echo
+	while IFS=, read -r webport; do
+		cmseek --no-redirect --batch -u https://$1:$webport|tee -a webtech-$1.log
+	done < $1-https-tmp.log
+
+	# Clean-up colors in result:
+	cat webtech-$1.log|sed 's/\x1B\[[0-9;]*[JKmsu]//g'>webtech-$1.log
+
+	# Clean-up tmp files:
+	rm -f $1-http-tmp.log
+	rm -f $1-https-tmp.log
+	
 fi
