@@ -68,11 +68,12 @@ then
 	echo "=====================[92m"
 	while IFS=, read -r webport; do
 		echo "Scanning http://$1:$webport"
-		whatwaf -u http://$1:$webport|>>webtech-$1.log
+		whatwaf --hide --skip -u http://$1:$webport|tee -a webtech-$1.log
 	done < $1-http-tmp.log
+	echo
 	while IFS=, read -r webport; do
 		echo "Scan https://$1:$webport"
-		whatwaf -u https://$1:$webport|>>webtech-$1.log
+		whatwaf --hide --skip -u https://$1:$webport|tee -a webtech-$1.log
 	done < $1-https-tmp.log
 	
 fi
