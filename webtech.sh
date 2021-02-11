@@ -5,8 +5,26 @@ nmapoptions=""
 # ======================================
 
 
-host=$1
-paramports=$2
+parser() {
+    # Define default values
+    ports=${ports:-"medium"}
+    host=${host:-""}
+
+
+    # Assign the values given by the user
+    while [ $# -gt 0 ]; do
+        if [[ $1 == *"-"* ]]; then
+            param="${1/-/}"
+            declare -g $param="$2"
+        fi
+        shift
+    done
+
+}
+
+parser $@
+
+paramports=$ports
 
 
 small="80,443"
